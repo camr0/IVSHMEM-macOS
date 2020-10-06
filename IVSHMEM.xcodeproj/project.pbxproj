@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		4121AB042505ECE000BE8BA1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4121AB032505ECE000BE8BA1 /* main.c */; };
+		4121AB0A2505F45F00BE8BA1 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4121AB092505F45F00BE8BA1 /* IOKit.framework */; };
+		4121BEF825019340000F7E15 /* IVSHMEM.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4121BEF725019340000F7E15 /* IVSHMEM.hpp */; };
+		4121BEFA25019340000F7E15 /* IVSHMEM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4121BEF925019340000F7E15 /* IVSHMEM.cpp */; };
+		4124DB6A2505A7160065AA5E /* IVSHMEMUserClient.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4124DB682505A7160065AA5E /* IVSHMEMUserClient.cpp */; };
+		4124DB6B2505A7160065AA5E /* IVSHMEMUserClient.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4124DB692505A7160065AA5E /* IVSHMEMUserClient.hpp */; };
+		4124DB6F2505A9680065AA5E /* IVSHMEMShared.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4124DB6D2505A9680065AA5E /* IVSHMEMShared.hpp */; };
+		4134C46A252C13B8000A9638 /* IVSHMEMShared.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 4124DB6D2505A9680065AA5E /* IVSHMEMShared.hpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		4121AAFF2505ECE000BE8BA1 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		4121AB012505ECE000BE8BA1 /* IVSHMEM Client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "IVSHMEM Client"; sourceTree = BUILT_PRODUCTS_DIR; };
+		4121AB032505ECE000BE8BA1 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		4121AB092505F45F00BE8BA1 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
+		4121BEF425019340000F7E15 /* IVSHMEM.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IVSHMEM.kext; sourceTree = BUILT_PRODUCTS_DIR; };
+		4121BEF725019340000F7E15 /* IVSHMEM.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IVSHMEM.hpp; sourceTree = "<group>"; };
+		4121BEF925019340000F7E15 /* IVSHMEM.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IVSHMEM.cpp; sourceTree = "<group>"; };
+		4121BEFB25019340000F7E15 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		4124DB682505A7160065AA5E /* IVSHMEMUserClient.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = IVSHMEMUserClient.cpp; sourceTree = "<group>"; };
+		4124DB692505A7160065AA5E /* IVSHMEMUserClient.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IVSHMEMUserClient.hpp; sourceTree = "<group>"; };
+		4124DB6D2505A9680065AA5E /* IVSHMEMShared.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IVSHMEMShared.hpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		4121AAFE2505ECE000BE8BA1 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4121AB0A2505F45F00BE8BA1 /* IOKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4121BEF125019340000F7E15 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		4121AB082505F45E00BE8BA1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4121AB092505F45F00BE8BA1 /* IOKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		4121BEEA25019340000F7E15 = {
+			isa = PBXGroup;
+			children = (
+				4121BEF625019340000F7E15 /* IVSHMEM */,
+				4134C46B252C1845000A9638 /* IVSHMEM Client */,
+				4121BEF525019340000F7E15 /* Products */,
+				4121AB082505F45E00BE8BA1 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		4121BEF525019340000F7E15 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				4121BEF425019340000F7E15 /* IVSHMEM.kext */,
+				4121AB012505ECE000BE8BA1 /* IVSHMEM Client */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		4121BEF625019340000F7E15 /* IVSHMEM */ = {
+			isa = PBXGroup;
+			children = (
+				4121BEFB25019340000F7E15 /* Info.plist */,
+				4121BEF725019340000F7E15 /* IVSHMEM.hpp */,
+				4121BEF925019340000F7E15 /* IVSHMEM.cpp */,
+				4124DB6D2505A9680065AA5E /* IVSHMEMShared.hpp */,
+				4124DB692505A7160065AA5E /* IVSHMEMUserClient.hpp */,
+				4124DB682505A7160065AA5E /* IVSHMEMUserClient.cpp */,
+			);
+			path = IVSHMEM;
+			sourceTree = "<group>";
+		};
+		4134C46B252C1845000A9638 /* IVSHMEM Client */ = {
+			isa = PBXGroup;
+			children = (
+				4121AB032505ECE000BE8BA1 /* main.c */,
+			);
+			path = "IVSHMEM Client";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		4121BEEF25019340000F7E15 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4124DB6B2505A7160065AA5E /* IVSHMEMUserClient.hpp in Headers */,
+				4124DB6F2505A9680065AA5E /* IVSHMEMShared.hpp in Headers */,
+				4121BEF825019340000F7E15 /* IVSHMEM.hpp in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		4121AB002505ECE000BE8BA1 /* IVSHMEM Client */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4121AB072505ECE000BE8BA1 /* Build configuration list for PBXNativeTarget "IVSHMEM Client" */;
+			buildPhases = (
+				4121AAFD2505ECE000BE8BA1 /* Sources */,
+				4121AAFE2505ECE000BE8BA1 /* Frameworks */,
+				4121AAFF2505ECE000BE8BA1 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "IVSHMEM Client";
+			productName = "IVSHMEM Client";
+			productReference = 4121AB012505ECE000BE8BA1 /* IVSHMEM Client */;
+			productType = "com.apple.product-type.tool";
+		};
+		4121BEF325019340000F7E15 /* IVSHMEM */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 4121BEFE25019340000F7E15 /* Build configuration list for PBXNativeTarget "IVSHMEM" */;
+			buildPhases = (
+				4121BEEF25019340000F7E15 /* Headers */,
+				4121BEF025019340000F7E15 /* Sources */,
+				4121BEF125019340000F7E15 /* Frameworks */,
+				4121BEF225019340000F7E15 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = IVSHMEM;
+			productName = IVSHMEM;
+			productReference = 4121BEF425019340000F7E15 /* IVSHMEM.kext */;
+			productType = "com.apple.product-type.kernel-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		4121BEEB25019340000F7E15 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				KnownAssetTags = (
+					New,
+				);
+				LastUpgradeCheck = 1160;
+				ORGANIZATIONNAME = Ali;
+				TargetAttributes = {
+					4121AB002505ECE000BE8BA1 = {
+						CreatedOnToolsVersion = 11.6;
+					};
+					4121BEF325019340000F7E15 = {
+						CreatedOnToolsVersion = 11.6;
+					};
+				};
+			};
+			buildConfigurationList = 4121BEEE25019340000F7E15 /* Build configuration list for PBXProject "IVSHMEM" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4121BEEA25019340000F7E15;
+			productRefGroup = 4121BEF525019340000F7E15 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				4121BEF325019340000F7E15 /* IVSHMEM */,
+				4121AB002505ECE000BE8BA1 /* IVSHMEM Client */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		4121BEF225019340000F7E15 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		4121AAFD2505ECE000BE8BA1 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4134C46A252C13B8000A9638 /* IVSHMEMShared.hpp in Sources */,
+				4121AB042505ECE000BE8BA1 /* main.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		4121BEF025019340000F7E15 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				4121BEFA25019340000F7E15 /* IVSHMEM.cpp in Sources */,
+				4124DB6A2505A7160065AA5E /* IVSHMEMUserClient.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		4121AB052505ECE000BE8BA1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "";
+				HEADER_SEARCH_PATHS = "${SRCROOT}/../\U0001IVSHMEM";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		4121AB062505ECE000BE8BA1 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "";
+				HEADER_SEARCH_PATHS = "${SRCROOT}/../\U0001IVSHMEM";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		4121BEFC25019340000F7E15 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		4121BEFD25019340000F7E15 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MACOSX_DEPLOYMENT_TARGET = 10.15;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		4121BEFF25019340000F7E15 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1.0.0d1;
+				INFOPLIST_FILE = IVSHMEM/Info.plist;
+				MODULE_NAME = com.camr0.driver.IVSHMEM;
+				MODULE_VERSION = 1.0.0d1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.camr0.driver.IVSHMEM;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Debug;
+		};
+		4121BF0025019340000F7E15 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1.0.0d1;
+				INFOPLIST_FILE = IVSHMEM/Info.plist;
+				MODULE_NAME = com.camr0.driver.IVSHMEM;
+				MODULE_VERSION = 1.0.0d1;
+				PRODUCT_BUNDLE_IDENTIFIER = com.camr0.driver.IVSHMEM;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = kext;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		4121AB072505ECE000BE8BA1 /* Build configuration list for PBXNativeTarget "IVSHMEM Client" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4121AB052505ECE000BE8BA1 /* Debug */,
+				4121AB062505ECE000BE8BA1 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4121BEEE25019340000F7E15 /* Build configuration list for PBXProject "IVSHMEM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4121BEFC25019340000F7E15 /* Debug */,
+				4121BEFD25019340000F7E15 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		4121BEFE25019340000F7E15 /* Build configuration list for PBXNativeTarget "IVSHMEM" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4121BEFF25019340000F7E15 /* Debug */,
+				4121BF0025019340000F7E15 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 4121BEEB25019340000F7E15 /* Project object */;
+}
