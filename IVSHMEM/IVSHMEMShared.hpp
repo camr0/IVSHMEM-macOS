@@ -13,7 +13,9 @@ enum {
     kSampleMethod1 = 0,
     kSampleMethod2 = 1,
     kSampleMethod3 = 2,
-    kSampleNumMethods
+    kSampleNumMethods,
+    
+    getMemorySizeMethod = 3
 };
 
 // types f	or IOServiceOpen()
@@ -24,7 +26,7 @@ enum {
 // types for IOConnectMapMemory()
 enum {
     kSamplePCIMemoryType1 = 100,
-    kSamplePCIMemoryType2 = 101,
+    kBAR2MemoryType = 101,
 };
 
 enum {

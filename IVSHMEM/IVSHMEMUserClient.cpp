@@ -76,8 +76,8 @@ bool IVSHMEMDeviceUserClient::start(IOService *provider)
      * will call clientMemoryForType to obtain this memory descriptor.
      */
     
-    IOMemoryDescriptor *mem = fDriver->copyGlobalMemory();
-    IOByteCount memLength = mem->getLength();
+    IOMemoryDescriptor *mem = fDriver->copyGlobalMemory(); // BAR2
+    IOByteCount memLength = mem->getLength(); // Length of BAR2(shared mem)
     IOLog("%s[%p]: BAR2 mem->getLength() = %llu \n", getName(), this, memLength);
     
     // TODO: replace this sizeof with a method to get the size of the actual IVSHMEM BAR2 region
@@ -161,6 +161,12 @@ IOReturn IVSHMEMDeviceUserClient::externalMethod(uint32_t selector,
     {
         case kSampleMethod1:
             err = method1( (UInt32 *) arguments->structureInput,
+                          (UInt32 *)  arguments->structureOutput,
+                          arguments->structureInputSize, (IOByteCount *) &arguments->structureOutputSize );
+            break;
+        
+        case getMemorySizeMethod:
+            err = getBAR2MemorySize( (UInt32 *) arguments->structureInput,
                           (UInt32 *)  arguments->structureOutput,
                           arguments->structureInputSize, (IOByteCount *) &arguments->structureOutputSize );
             break;
@@ -251,7 +257,7 @@ IOReturn IVSHMEMDeviceUserClient::clientMemoryForType(
 //            ret = kIOReturnSuccess;
 //            break;
             
-        case kSamplePCIMemoryType2:
+        case kBAR2MemoryType:
             // Give the client access to some of the card's memory
             // (all clients get the same)
             *memory  = fDriver->copyGlobalMemory();
@@ -265,4 +271,26 @@ IOReturn IVSHMEMDeviceUserClient::clientMemoryForType(
     }
     
     return ret;
+}
+
+
+IOReturn IVSHMEMDeviceUserClient::getBAR2MemorySize(UInt32 *dataIn,
+                                          UInt32 *dataOut,
+                                          IOByteCount inputSize,
+                                          IOByteCount *outputSize )
+{
+    IOReturn    ret;
+    IOItemCount    count;
+    
+    IOLog("IVSHMEMDeviceUserClient::getMemorySize\n");
+    
+    if (*outputSize < inputSize)
+        return( kIOReturnNoSpace );
+    
+    IOMemoryDescriptor *mem = fDriver->copyGlobalMemory(); // BAR2
+    *dataOut = mem->getLength(); // Length of BAR2(shared mem)
+    
+    ret = kIOReturnSuccess;
+    *outputSize = sizeof(UInt32);
+    return( ret );
 }

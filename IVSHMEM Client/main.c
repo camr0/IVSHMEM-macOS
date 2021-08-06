@@ -103,7 +103,7 @@ void TestUserClient( io_service_t service )
 //    mach_vm_address_t           addr;
 //    mach_vm_size_t              size;
 //
-//    kr = IOConnectMapMemory( connect, kSamplePCIMemoryType2,
+//    kr = IOConnectMapMemory( connect, kBAR2MemoryType,
 //                            mach_task_self(), &addr, &size,
 //                            kIOMapAnywhere | kIOMapDefaultCache );
 //    assert( KERN_SUCCESS == kr );
@@ -117,6 +117,35 @@ void TestUserClient( io_service_t service )
 //
 //    strcpy( shared->string, "some other data" );
 //}
+
+void TestSharedMemorySize( io_service_t service )
+{
+    kern_return_t                kr;
+    io_connect_t                connect;
+    size_t                        structureOutputSize;
+//    SampleStructForMethod2        method2Param;
+//    SampleResultsForMethod2        method2Results;
+    uint32_t                    memorySize;
+    IOByteCount                    bigBufferLen;
+    uint32_t *                    bigBuffer;
+
+    // connecting to driver
+    printf("CONNECTING TO DRIVER\n");
+    kr = IOServiceOpen( service, mach_task_self(), kSamplePCIConnectType, &connect );
+    assert( KERN_SUCCESS == kr );
+
+    // test a simple struct in/out method
+    structureOutputSize = sizeof(memorySize);
+
+    kr = IOConnectCallStructMethod( connect, getMemorySizeMethod,
+                                   // inputStructure
+                                   &memorySize, sizeof(memorySize),
+                                   // ouputStructure
+                                   &memorySize, &structureOutputSize );
+
+    assert( KERN_SUCCESS == kr );
+    printf("Shared Memory Size: %i bytes (%i MB)\n", memorySize, memorySize / 1048576);
+}
 
 int main(int argc, const char * argv[]) {
     io_iterator_t            iter;
@@ -150,6 +179,8 @@ int main(int argc, const char * argv[]) {
         
         // Test the user client
         TestUserClient( service );
+        
+        TestSharedMemorySize(service);
     }
     IOObjectRelease(iter);
 	

@@ -43,6 +43,7 @@ public:
     
     // External methods
     virtual IOReturn method1(UInt32 *dataIn, UInt32 *dataOut, IOByteCount inputCount, IOByteCount *outputCount);
+    virtual IOReturn getBAR2MemorySize(UInt32 *dataIn, UInt32 *dataOut, IOByteCount inputCount, IOByteCount *outputCount);
 };
 
 #endif /* IVSHMEMUserClient_hpp */
