@@ -16,6 +16,11 @@ enum {
     kSampleNumMethods
 };
 
+// types f	or IOServiceOpen()
+enum {
+    kSamplePCIConnectType = 23
+};
+
 // types for IOConnectMapMemory()
 enum {
     kSamplePCIMemoryType1 = 100,

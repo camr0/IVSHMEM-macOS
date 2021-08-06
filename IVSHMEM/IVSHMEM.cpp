@@ -80,8 +80,15 @@ bool IVSHMEMDevice::start(IOService *provider)
     mem = fPCIDevice->getDeviceMemoryWithRegister(
                                                   kIOPCIConfigBaseAddress0 );
     if ( mem )
-        IOLog("Range@0x%x " PhysAddr_FORMAT ":" ByteCount_FORMAT "\n", kIOPCIConfigBaseAddress0,
+        IOLog("BAR0 Range@0x%x " PhysAddr_FORMAT ":" ByteCount_FORMAT "\n", kIOPCIConfigBaseAddress0,
              mem->getPhysicalAddress(), mem->getLength());
+    
+    /* look up a range based on its config space base address register */
+    IOMemoryDescriptor *mem1 = fPCIDevice->getDeviceMemoryWithRegister(
+                                                  kIOPCIConfigBaseAddress1 );
+    if ( mem1 )
+        IOLog("BAR1 Range@0x%x " PhysAddr_FORMAT ":" ByteCount_FORMAT "\n", kIOPCIConfigBaseAddress1,
+             mem1->getPhysicalAddress(), mem1->getLength());
     
     /* Map a range based on its config space base address register,
      * This is how the driver gets access to its memory-mapped registers.
@@ -91,7 +98,7 @@ bool IVSHMEMDevice::start(IOService *provider)
     map = fPCIDevice->mapDeviceMemoryWithRegister(
                                                   kIOPCIConfigBaseAddress0 );
     if ( map ) {
-        IOLog("Range@0x%x (" PhysAddr_FORMAT ") mapped to kernel virtual address " VirtAddr_FORMAT "\n",
+        IOLog("BAR0 Range@0x%x (" PhysAddr_FORMAT ") mapped to kernel virtual address " VirtAddr_FORMAT "\n",
               kIOPCIConfigBaseAddress0,
               map->getPhysicalAddress(),
               map->getVirtualAddress()

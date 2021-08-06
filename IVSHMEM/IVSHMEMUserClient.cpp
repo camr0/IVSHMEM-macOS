@@ -12,6 +12,7 @@
 #include <libkern/OSByteOrder.h>
 #include <IOKit/assert.h>
 #include <IOKit/IOBufferMemoryDescriptor.h>
+#include <os/log.h>
 
 #define super IOUserClient
 
@@ -77,7 +78,7 @@ bool IVSHMEMDeviceUserClient::start(IOService *provider)
     
     IOMemoryDescriptor *mem = fDriver->copyGlobalMemory();
     IOByteCount memLength = mem->getLength();
-    IOLog("%s[%p]: BAR2 mem->getLength() = %llu", getName(), this, memLength);
+    IOLog("%s[%p]: BAR2 mem->getLength() = %llu \n", getName(), this, memLength);
     
     // TODO: replace this sizeof with a method to get the size of the actual IVSHMEM BAR2 region
     fClientSharedMemory = IOBufferMemoryDescriptor::withOptions(kIOMemoryKernelUserShared, sizeof(DriverSharedMemory));
@@ -194,6 +195,7 @@ IOReturn IVSHMEMDeviceUserClient::method1(UInt32 *dataIn,
     IOItemCount    count;
     
     IOLog("IVSHMEMDeviceUserClient::method1(");
+    os_log(OS_LOG_DEFAULT, "AAAAAAAAAAAAAAAAAAAAAAAAAaaa");
     
     if (*outputSize < inputSize)
         return( kIOReturnNoSpace );
@@ -205,7 +207,8 @@ IOReturn IVSHMEMDeviceUserClient::method1(UInt32 *dataIn,
 //            dataIn[i] = OSSwapInt32(dataIn[i]);
 //        }
         IOLog("" UInt32_x_FORMAT ", ", dataIn[i]);
-        dataOut[i] = dataIn[i] ^ 0xffffffff;
+//        dataOut[i] = dataIn[i] ^ 0xffffffff;
+        dataOut[i] = dataIn[i] + 5;
 //        // Rosetta again
 //        if (fCrossEndian) {
 //            dataOut[i] = OSSwapInt32(dataOut[i]);
@@ -252,6 +255,7 @@ IOReturn IVSHMEMDeviceUserClient::clientMemoryForType(
             // Give the client access to some of the card's memory
             // (all clients get the same)
             *memory  = fDriver->copyGlobalMemory();
+            
             ret = kIOReturnSuccess;
             break;
             

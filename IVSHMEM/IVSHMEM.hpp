@@ -16,7 +16,7 @@ class IOMemoryDescriptor;
 class IVSHMEMDevice : public IOService {
     
     OSDeclareDefaultStructors(IVSHMEMDevice)
-
+	
 private:
     IOPCIDevice             *fPCIDevice;
 //    IOMemoryDescriptor      *fLowMemory;
