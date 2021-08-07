@@ -138,6 +138,15 @@ bool IVSHMEMDevice::start(IOService *provider)
     /* Publish ourselves so clients can find us */
     registerService();
     
+    /* Check whether interrupts are enabled (not currently supported)*/
+    if (fPCIDevice->getDeviceMemoryCount() == 3) {
+        IOLog("INTERRUPTS ENABLED\n");
+        interruptsEnabled = 1;
+    } else {
+        IOLog("INTERRUPTS DISABLED\n");
+        interruptsEnabled = 0;
+    }
+    
     return true;
 }
 

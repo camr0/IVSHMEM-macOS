@@ -16,6 +16,7 @@
 #include <sys/mman.h>
 #include <inttypes.h>
 #include <IOKit/IOKitLib.h>
+//#include <IOKit/IOMemoryDescriptor.h>
 //#include <IOKit/IOBufferMemoryDescriptor.h>
 #include <CoreFoundation/CoreFoundation.h>
 
@@ -38,7 +39,7 @@ void TestUserClient( io_service_t service )
     uint32_t *                    bigBuffer;
 
     // connecting to driver
-    printf("CONNECTING TO DRIVER\n");
+//    printf("CONNECTING TO DRIVER\n");
     kr = IOServiceOpen( service, mach_task_self(), kSamplePCIConnectType, &connect );
     assert( KERN_SUCCESS == kr );
 
@@ -130,7 +131,7 @@ void TestSharedMemorySize( io_service_t service )
     uint32_t *                    bigBuffer;
 
     // connecting to driver
-    printf("CONNECTING TO DRIVER\n");
+//    printf("CONNECTING TO DRIVER\n");
     kr = IOServiceOpen( service, mach_task_self(), kSamplePCIConnectType, &connect );
     assert( KERN_SUCCESS == kr );
 
@@ -145,6 +146,35 @@ void TestSharedMemorySize( io_service_t service )
 
     assert( KERN_SUCCESS == kr );
     printf("Shared Memory Size: %i bytes (%i MB)\n", memorySize, memorySize / 1048576);
+}
+
+void TestInterruptStatus( io_service_t service )
+{
+    kern_return_t                kr;
+    io_connect_t                connect;
+    size_t                        structureOutputSize;
+//    SampleStructForMethod2        method2Param;
+//    SampleResultsForMethod2        method2Results;
+    uint32_t                    interruptsEnabled;
+    IOByteCount                    bigBufferLen;
+    uint32_t *                    bigBuffer;
+
+    // connecting to driver
+//    printf("CONNECTING TO DRIVER\n");
+    kr = IOServiceOpen( service, mach_task_self(), kSamplePCIConnectType, &connect );
+    assert( KERN_SUCCESS == kr );
+
+    // test a simple struct in/out method
+    structureOutputSize = sizeof(interruptsEnabled);
+
+    kr = IOConnectCallStructMethod( connect, getInterruptsEnabledMethod,
+                                   // inputStructure
+                                   &interruptsEnabled, sizeof(interruptsEnabled),
+                                   // ouputStructure
+                                   &interruptsEnabled, &structureOutputSize );
+
+    assert( KERN_SUCCESS == kr );
+    printf("Interrupts Enabled: %i\n", interruptsEnabled);
 }
 
 int main(int argc, const char * argv[]) {
@@ -181,6 +211,7 @@ int main(int argc, const char * argv[]) {
         TestUserClient( service );
         
         TestSharedMemorySize(service);
+        TestInterruptStatus(service);
     }
     IOObjectRelease(iter);
 	

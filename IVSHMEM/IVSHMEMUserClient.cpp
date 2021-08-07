@@ -170,6 +170,12 @@ IOReturn IVSHMEMDeviceUserClient::externalMethod(uint32_t selector,
                           (UInt32 *)  arguments->structureOutput,
                           arguments->structureInputSize, (IOByteCount *) &arguments->structureOutputSize );
             break;
+        
+        case getInterruptsEnabledMethod:
+            err = getInterruptsEnabled( (UInt32 *) arguments->structureInput,
+                          (UInt32 *)  arguments->structureOutput,
+                          arguments->structureInputSize, (IOByteCount *) &arguments->structureOutputSize );
+            break;
             
 //        case kSampleMethod2:
 //            err = method2( (SampleStructForMethod2 *) arguments->structureInput,
@@ -226,6 +232,8 @@ IOReturn IVSHMEMDeviceUserClient::method1(UInt32 *dataIn,
     IOLog(")\n");
     *outputSize = count * sizeof( UInt32 );
     
+    
+    
     return( ret );
 }
 
@@ -280,7 +288,7 @@ IOReturn IVSHMEMDeviceUserClient::getBAR2MemorySize(UInt32 *dataIn,
                                           IOByteCount *outputSize )
 {
     IOReturn    ret;
-    IOItemCount    count;
+//    IOItemCount    count;
     
     IOLog("IVSHMEMDeviceUserClient::getMemorySize\n");
     
@@ -289,6 +297,27 @@ IOReturn IVSHMEMDeviceUserClient::getBAR2MemorySize(UInt32 *dataIn,
     
     IOMemoryDescriptor *mem = fDriver->copyGlobalMemory(); // BAR2
     *dataOut = mem->getLength(); // Length of BAR2(shared mem)
+    
+    ret = kIOReturnSuccess;
+    *outputSize = sizeof(UInt32);
+    return( ret );
+}
+
+
+IOReturn IVSHMEMDeviceUserClient::getInterruptsEnabled(UInt32 *dataIn,
+                                          UInt32 *dataOut,
+                                          IOByteCount inputSize,
+                                          IOByteCount *outputSize )
+{
+    IOReturn    ret;
+//    IOItemCount    count;
+    
+//    IOLog("IVSHMEMDeviceUserClient::getMemorySize\n");
+    
+    if (*outputSize < inputSize)
+        return( kIOReturnNoSpace );
+    
+    *dataOut = fDriver->interruptsEnabled;
     
     ret = kIOReturnSuccess;
     *outputSize = sizeof(UInt32);

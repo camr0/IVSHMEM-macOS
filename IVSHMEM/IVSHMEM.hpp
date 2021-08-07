@@ -34,4 +34,6 @@ public:
     IOMemoryDescriptor* copyGlobalMemory(void);
 //    IOReturn generateDMAAddresses(IOMemoryDescriptor *memDesc);
 //    void updateRegistry(UInt32 value);
+    
+    bool interruptsEnabled = 0;
 };

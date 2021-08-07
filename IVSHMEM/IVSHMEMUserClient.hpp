@@ -26,6 +26,7 @@ private:
     task_t                          fTask;
     int32_t                         fOpenCount;
 //    bool                            fCrossEndian;
+//    bool                        *fInterruptsEnabled; 
 
 public:
     // IOService overrides
@@ -44,6 +45,7 @@ public:
     // External methods
     virtual IOReturn method1(UInt32 *dataIn, UInt32 *dataOut, IOByteCount inputCount, IOByteCount *outputCount);
     virtual IOReturn getBAR2MemorySize(UInt32 *dataIn, UInt32 *dataOut, IOByteCount inputCount, IOByteCount *outputCount);
+    virtual IOReturn getInterruptsEnabled(UInt32 *dataIn, UInt32 *dataOut, IOByteCount inputCount, IOByteCount *outputCount);
 };
 
 #endif /* IVSHMEMUserClient_hpp */

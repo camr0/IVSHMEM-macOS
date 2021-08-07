@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		411E7127252D175800DB8295 /* libkmod.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 411E7125252D16E000DB8295 /* libkmod.a */; };
-		4121AB042505ECE000BE8BA1 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 4121AB032505ECE000BE8BA1 /* main.c */; };
+		4121AB042505ECE000BE8BA1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 4121AB032505ECE000BE8BA1 /* main.m */; };
 		4121AB0A2505F45F00BE8BA1 /* IOKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4121AB092505F45F00BE8BA1 /* IOKit.framework */; };
 		4121BEF825019340000F7E15 /* IVSHMEM.hpp in Headers */ = {isa = PBXBuildFile; fileRef = 4121BEF725019340000F7E15 /* IVSHMEM.hpp */; };
 		4121BEFA25019340000F7E15 /* IVSHMEM.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4121BEF925019340000F7E15 /* IVSHMEM.cpp */; };
@@ -33,7 +33,7 @@
 /* Begin PBXFileReference section */
 		411E7125252D16E000DB8295 /* libkmod.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libkmod.a; path = MacKernelSDK/Library/x86_64/libkmod.a; sourceTree = "<group>"; };
 		4121AB012505ECE000BE8BA1 /* IVSHMEM Client */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "IVSHMEM Client"; sourceTree = BUILT_PRODUCTS_DIR; };
-		4121AB032505ECE000BE8BA1 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		4121AB032505ECE000BE8BA1 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		4121AB092505F45F00BE8BA1 /* IOKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = IOKit.framework; path = System/Library/Frameworks/IOKit.framework; sourceTree = SDKROOT; };
 		4121BEF425019340000F7E15 /* IVSHMEM.kext */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = IVSHMEM.kext; sourceTree = BUILT_PRODUCTS_DIR; };
 		4121BEF725019340000F7E15 /* IVSHMEM.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IVSHMEM.hpp; sourceTree = "<group>"; };
@@ -108,7 +108,7 @@
 		4134C46B252C1845000A9638 /* IVSHMEM Client */ = {
 			isa = PBXGroup;
 			children = (
-				4121AB032505ECE000BE8BA1 /* main.c */,
+				4121AB032505ECE000BE8BA1 /* main.m */,
 			);
 			path = "IVSHMEM Client";
 			sourceTree = "<group>";
@@ -219,7 +219,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				4134C46A252C13B8000A9638 /* IVSHMEMShared.hpp in Sources */,
-				4121AB042505ECE000BE8BA1 /* main.c in Sources */,
+				4121AB042505ECE000BE8BA1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
