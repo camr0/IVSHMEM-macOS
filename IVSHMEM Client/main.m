@@ -1,5 +1,5 @@
 //
-//  main.c
+//  main.m
 //  IVSHMEM Client
 //
 //  Created by Ali on 9/7/20.
@@ -19,6 +19,7 @@
 //#include <IOKit/IOMemoryDescriptor.h>
 //#include <IOKit/IOBufferMemoryDescriptor.h>
 #include <CoreFoundation/CoreFoundation.h>
+//#include libkern
 
 #include "IVSHMEMShared.hpp"
 
@@ -177,6 +178,82 @@ void TestInterruptStatus( io_service_t service )
     printf("Interrupts Enabled: %i\n", interruptsEnabled);
 }
 
+void TestRead( io_service_t service) {
+    kern_return_t                kr;
+    io_connect_t                connect;
+    size_t                        structureOutputSize;
+//    SampleStructForMethod2        method2Param;
+//    SampleResultsForMethod2        method2Results;
+    char                    message[] = "Hello World!";
+    //TODO: CHANGE OUTPUT TO EXIT CODE (UINT PREFERRABLY) 0 FOR SUCCESS, ETC.
+//    IOByteCount                    bigBufferLen;
+//    uint32_t *                    bigBuffer;
+    
+    // connecting to driver
+    //    printf("CONNECTING TO DRIVER\n");
+    kr = IOServiceOpen( service, mach_task_self(), kSamplePCIConnectType, &connect );
+    assert( KERN_SUCCESS == kr );
+    
+    // test a simple struct in/out method
+    //TODO: OUTPUT SIZE SET TO THE SIZE OF THE HARDCORDED TEST INPUT
+//    int len = sizeof(message)/sizeof(message[0]);
+    char messageReturned[strlen(message)];
+    structureOutputSize = strlen(message);
+
+    kr = IOConnectCallStructMethod( connect, readMemoryMethod,
+                                   // inputStructure
+                                   &message, strlen(message),
+                                   // ouputStructure
+                                   &messageReturned, &structureOutputSize );
+    assert( KERN_SUCCESS == kr );
+    printf("Reading Memory: %s\n", messageReturned);
+    
+//
+//    kr = IOConnectCallStructMethod( connect, writeMemoryMethod,
+//                                   // inputStructure
+//                                   &message, sizeof(message),
+//                                   // ouputStructure
+//                                   &messageReturned, sizeof(messageReturned)); // &structureOutputSize giving an error?
+//    assert( KERN_SUCCESS == kr );
+//    printf("Writing Memory...\n");
+}
+
+void TestWrite( io_service_t service, char messageIn[]) {
+    kern_return_t                kr;
+    io_connect_t                connect;
+    size_t                        structureOutputSize;
+//    SampleStructForMethod2        method2Param;
+//    SampleResultsForMethod2        method2Results;
+    char                    message[strlen(messageIn)];
+    strcpy(message, messageIn);
+    //TODO: CHANGE OUTPUT TO EXIT CODE (UINT PREFERRABLY) 0 FOR SUCCESS, ETC.
+//    IOByteCount                    bigBufferLen;
+//    uint32_t *                    bigBuffer;
+    
+    // connecting to driver
+    //    printf("CONNECTING TO DRIVER\n");
+    kr = IOServiceOpen( service, mach_task_self(), kSamplePCIConnectType, &connect );
+    assert( KERN_SUCCESS == kr );
+    
+    // test a simple struct in/out method
+    //TODO: OUTPUT SIZE SET TO THE SIZE OF THE HARDCORDED TEST INPUT
+//    int len = sizeof(message)/sizeof(message[0]);
+//    printf("izeof(message): %llu -- sizeof(message[0]): %llu\n", sizeof(message), sizeof(message[0]));
+//    printf("strlen(message): %llu\n", strlen(message));
+//    printf("sizeof(message[0]): %llu\n", sizeof(&message[0]));
+
+    char messageReturned[strlen(message)];
+    structureOutputSize = strlen(message);
+    
+    kr = IOConnectCallStructMethod( connect, writeMemoryMethod,
+                                   // inputStructure
+                                   &message, strlen(message),
+                                   // ouputStructure
+                                   &messageReturned, &structureOutputSize);
+    assert( KERN_SUCCESS == kr );
+    printf("Writing Memory...\n");
+}
+
 int main(int argc, const char * argv[]) {
     io_iterator_t            iter;
     io_service_t            service;
@@ -212,6 +289,10 @@ int main(int argc, const char * argv[]) {
         
         TestSharedMemorySize(service);
         TestInterruptStatus(service);
+        TestRead(service);
+        char message[] = "Hello World!";
+        TestWrite(service, message);
+        TestRead(service);
     }
     IOObjectRelease(iter);
 	

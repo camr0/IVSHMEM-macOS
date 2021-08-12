@@ -176,6 +176,20 @@ IOReturn IVSHMEMDeviceUserClient::externalMethod(uint32_t selector,
                           (UInt32 *)  arguments->structureOutput,
                           arguments->structureInputSize, (IOByteCount *) &arguments->structureOutputSize );
             break;
+        
+        case readMemoryMethod:
+            err = readMemory( (char **) arguments->structureInput,
+                             (char **) arguments->structureOutput,
+                             arguments->structureInputSize,
+                             (IOByteCount *) &arguments->structureOutputSize);
+            break;
+        
+        case writeMemoryMethod:
+            err = writeMemory( (char **) arguments->structureInput,
+                             (char **) arguments->structureOutput,
+                             arguments->structureInputSize,
+                             (IOByteCount *) &arguments->structureOutputSize);
+            break;
             
 //        case kSampleMethod2:
 //            err = method2( (SampleStructForMethod2 *) arguments->structureInput,
@@ -232,7 +246,14 @@ IOReturn IVSHMEMDeviceUserClient::method1(UInt32 *dataIn,
     IOLog(")\n");
     *outputSize = count * sizeof( UInt32 );
     
+//    IOMemoryDescriptor *memory  = fDriver->copyGlobalMemory();
+//    IOByteCount *returnByteLength = 0;
+//    char message[] = "Hello World!";
+//    memory->writeBytes(0, message, sizeof(message));
     
+//    char returnMessage[sizeof(message)];
+//    memory->readBytes(0, returnMessage, sizeof(message));
+//    IOLog("READING MEMORY: %s\n", returnMessage);
     
     return( ret );
 }
@@ -321,5 +342,59 @@ IOReturn IVSHMEMDeviceUserClient::getInterruptsEnabled(UInt32 *dataIn,
     
     ret = kIOReturnSuccess;
     *outputSize = sizeof(UInt32);
+    return( ret );
+}
+
+IOReturn IVSHMEMDeviceUserClient::readMemory(char *dataIn[],
+                                             char *dataOut[],
+                                             IOByteCount inputSize,
+                                             IOByteCount *outputSize)
+{
+    IOReturn    ret;
+//    IOItemCount    count;
+    
+    IOLog("IVSHMEMDeviceUserClient::readMemory\n");
+    IOLog("[IVSHMEMUserClient] dataIn[]: %s\n", dataIn);
+    if (*outputSize < inputSize)
+        return( kIOReturnNoSpace );
+    
+    IOMemoryDescriptor *memory = fDriver->copyGlobalMemory(); // BAR2
+//    IOByteCount *returnByteLength = 0;
+    int len = sizeof(dataIn)/sizeof(dataIn[0]);
+//    char returnMessage[len];
+    
+// TODO: offset hardcoded at 0
+    memory->readBytes(0, dataOut, *outputSize);
+//    IOLog("[IVSHMEMUserClient] READING MEMORY: %s (sizeof = %lu)\n", dataOut, sizeof(dataIn));
+    IOLog("[IVSHMEMUserClient] READING MEMORY: %s (outputSize = %lu)\n", dataOut, *outputSize);
+//    *dataOut = returnMessage;
+//    *outputSize = sizeof(dataOut);
+    
+    ret = kIOReturnSuccess;
+    return( ret );
+}
+
+IOReturn IVSHMEMDeviceUserClient::writeMemory(char *dataIn[],
+                                             char *dataOut[],
+                                             IOByteCount inputSize,
+                                             IOByteCount *outputSize)
+{
+    IOReturn    ret;
+//    IOItemCount    count;
+
+    IOLog("IVSHMEMDeviceUserClient::writeMemory\n");
+
+    if (*outputSize < inputSize) {
+        IOLog("AHHHHHHHHH NO SPACEEEEEEEEE (*outputSize < inputSize)\n");
+        return( kIOReturnNoSpace );
+    }
+
+    IOMemoryDescriptor *memory = fDriver->copyGlobalMemory(); // BAR2
+//    IOByteCount count = sizeof(dataIn);
+//    IOLog("[IVSHMEMUserClient] WRITING MEMORY: %s (sizeof = %lu)\n", dataIn, sizeof(dataIn));
+    IOLog("[IVSHMEMUserClient] WRITING MEMORY: %s (inputSize = %lu)\n", dataIn, inputSize);
+    memory->writeBytes(0, dataIn, inputSize);
+
+    ret = kIOReturnSuccess;
     return( ret );
 }
