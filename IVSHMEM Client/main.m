@@ -91,34 +91,41 @@ void TestUserClient( io_service_t service )
     munmap( bigBuffer, bigBufferLen );
 }
 
-// when using shared memory you need to decide and manage the endianess and word length issues
-// remember that if you expect to support mixed endiness (i.e. Rosetta) you probably will want to
-// be using shared memory in a PPC way even on Intel machines. Why? Can you rewrite the old PPC
-// app to understand Intel endianess and word length? No :-(
-//
-// An alternative for shared memory for a high speed streaming data queue would be IOStream Family.
+void TestSharedMemory( io_service_t service )
+{
+    kern_return_t        kr;
+    io_connect_t         connect = 0;
+    DriverSharedMemory   *shared;
 
-//void TestSharedMemory( io_connect_t connect )
-//{
-//    kern_return_t               kr;
-//    IOMemoryDescriptor          *mem;
-//    mach_vm_address_t           addr;
-//    mach_vm_size_t              size;
-//
-//    kr = IOConnectMapMemory( connect, kBAR2MemoryType,
-//                            mach_task_self(), &addr, &size,
-//                            kIOMapAnywhere | kIOMapDefaultCache );
+    #if __LP64__
+        mach_vm_address_t     addr;
+        mach_vm_size_t        size;
+    #else
+        vm_address_t     addr;
+        vm_size_t        size;
+    #endif
+
+    kr = IOServiceOpen(service, mach_task_self(), 0, &connect);
+    if (kr != KERN_SUCCESS) {
+        printf("error: IOServiceOpen returned 0xx\n", kr);
+    }
+    
+    kr = IOConnectMapMemory( connect, kBAR2MemoryType,
+                            mach_task_self(), &addr, &size,
+                            kIOMapAnywhere | kIOMapDefaultCache );
 //    assert( KERN_SUCCESS == kr );
-////    assert( size == sizeof(DriverSharedMemory));
-//
-////    shared = (DriverSharedMemory *) addr;
-//    mem = addr;
-//
-//    printf("From DriverSharedMemory: %08" PRIx32 ", %08" PRIx32 ", %08" PRIx32 ", \"%s\"\n",
-//           shared->field1, shared->field2, shared->field3, shared->string);
-//
-//    strcpy( shared->string, "some other data" );
-//}
+//    assert( size == sizeof( DriverSharedMemory ));
+
+    shared = (DriverSharedMemory *) addr;
+
+    printf("From DriverSharedMemory: %u, %s\n", shared->buildNumber, shared->message);
+    
+    printf("Writing Memory...\n");
+    shared->buildNumber = 4;
+    strcpy( shared->message, "Hello World from a memory map!" );
+    
+    printf("From DriverSharedMemory: %u, %s\n", shared->buildNumber, shared->message);
+}
 
 void TestSharedMemorySize( io_service_t service )
 {
@@ -178,81 +185,83 @@ void TestInterruptStatus( io_service_t service )
     printf("Interrupts Enabled: %i\n", interruptsEnabled);
 }
 
-void TestRead( io_service_t service) {
-    kern_return_t                kr;
-    io_connect_t                connect;
-    size_t                        structureOutputSize;
-//    SampleStructForMethod2        method2Param;
-//    SampleResultsForMethod2        method2Results;
-    char                    message[] = "Hello World!";
-    //TODO: CHANGE OUTPUT TO EXIT CODE (UINT PREFERRABLY) 0 FOR SUCCESS, ETC.
-//    IOByteCount                    bigBufferLen;
-//    uint32_t *                    bigBuffer;
-    
-    // connecting to driver
-    //    printf("CONNECTING TO DRIVER\n");
-    kr = IOServiceOpen( service, mach_task_self(), kSamplePCIConnectType, &connect );
-    assert( KERN_SUCCESS == kr );
-    
-    // test a simple struct in/out method
-    //TODO: OUTPUT SIZE SET TO THE SIZE OF THE HARDCORDED TEST INPUT
-//    int len = sizeof(message)/sizeof(message[0]);
-    char messageReturned[strlen(message)];
-    structureOutputSize = strlen(message);
-
-    kr = IOConnectCallStructMethod( connect, readMemoryMethod,
-                                   // inputStructure
-                                   &message, strlen(message),
-                                   // ouputStructure
-                                   &messageReturned, &structureOutputSize );
-    assert( KERN_SUCCESS == kr );
-    printf("Reading Memory: %s\n", messageReturned);
-    
+//void TestRead( io_service_t service) {
+//    kern_return_t                kr;
+//    io_connect_t                connect;
+//    size_t                        structureOutputSize;
+////    SampleStructForMethod2        method2Param;
+////    SampleResultsForMethod2        method2Results;
+//    char                    message[] = "Hello World!";
+//    //TODO: CHANGE OUTPUT TO EXIT CODE (UINT PREFERRABLY) 0 FOR SUCCESS, ETC.
+////    IOByteCount                    bigBufferLen;
+////    uint32_t *                    bigBuffer;
+//
+//    // connecting to driver
+//    //    printf("CONNECTING TO DRIVER\n");
+//    kr = IOServiceOpen( service, mach_task_self(), kSamplePCIConnectType, &connect );
+//    assert( KERN_SUCCESS == kr );
+//
+//    // test a simple struct in/out method
+//    //TODO: OUTPUT SIZE SET TO THE SIZE OF THE HARDCORDED TEST INPUT
+////    int len = sizeof(message)/sizeof(message[0]);
+//    char messageReturned[strlen(message)];
+//    structureOutputSize = strlen(message);
+//
+//    kr = IOConnectCallStructMethod( connect, readMemoryMethod,
+//                                   // inputStructure
+//                                   &message, strlen(message),
+//                                   // ouputStructure
+//                                   &messageReturned, &structureOutputSize );
+//    assert( KERN_SUCCESS == kr );
+//    printf("Reading Memory: %s\n", messageReturned);
+//
+////
+////    kr = IOConnectCallStructMethod( connect, writeMemoryMethod,
+////                                   // inputStructure
+////                                   &message, sizeof(message),
+////                                   // ouputStructure
+////                                   &messageReturned, sizeof(messageReturned)); // &structureOutputSize giving an error?
+////    assert( KERN_SUCCESS == kr );
+////    printf("Writing Memory...\n");
+//}
+//
+//void TestWrite( io_service_t service, char messageIn[]) {
+//    kern_return_t                kr;
+//    io_connect_t                connect;
+//    size_t                        structureOutputSize;
+////    SampleStructForMethod2        method2Param;
+////    SampleResultsForMethod2        method2Results;
+//    char                    message[strlen(messageIn)];
+//    strcpy(message, messageIn);
+//    //TODO: CHANGE OUTPUT TO EXIT CODE (UINT PREFERRABLY) 0 FOR SUCCESS, ETC.
+////    IOByteCount                    bigBufferLen;
+////    uint32_t *                    bigBuffer;
+//
+//    // connecting to driver
+//    //    printf("CONNECTING TO DRIVER\n");
+//    kr = IOServiceOpen( service, mach_task_self(), kSamplePCIConnectType, &connect );
+//    assert( KERN_SUCCESS == kr );
+//
+//    // test a simple struct in/out method
+//    //TODO: OUTPUT SIZE SET TO THE SIZE OF THE HARDCORDED TEST INPUT
+////    int len = sizeof(message)/sizeof(message[0]);
+////    printf("izeof(message): %llu -- sizeof(message[0]): %llu\n", sizeof(message), sizeof(message[0]));
+////    printf("strlen(message): %llu\n", strlen(message));
+////    printf("sizeof(message[0]): %llu\n", sizeof(&message[0]));
+//
+//    char messageReturned[strlen(message)];
+//    structureOutputSize = strlen(message);
 //
 //    kr = IOConnectCallStructMethod( connect, writeMemoryMethod,
 //                                   // inputStructure
-//                                   &message, sizeof(message),
+//                                   &message, strlen(message),
 //                                   // ouputStructure
-//                                   &messageReturned, sizeof(messageReturned)); // &structureOutputSize giving an error?
+//                                   &messageReturned, &structureOutputSize);
 //    assert( KERN_SUCCESS == kr );
 //    printf("Writing Memory...\n");
-}
+//}
 
-void TestWrite( io_service_t service, char messageIn[]) {
-    kern_return_t                kr;
-    io_connect_t                connect;
-    size_t                        structureOutputSize;
-//    SampleStructForMethod2        method2Param;
-//    SampleResultsForMethod2        method2Results;
-    char                    message[strlen(messageIn)];
-    strcpy(message, messageIn);
-    //TODO: CHANGE OUTPUT TO EXIT CODE (UINT PREFERRABLY) 0 FOR SUCCESS, ETC.
-//    IOByteCount                    bigBufferLen;
-//    uint32_t *                    bigBuffer;
-    
-    // connecting to driver
-    //    printf("CONNECTING TO DRIVER\n");
-    kr = IOServiceOpen( service, mach_task_self(), kSamplePCIConnectType, &connect );
-    assert( KERN_SUCCESS == kr );
-    
-    // test a simple struct in/out method
-    //TODO: OUTPUT SIZE SET TO THE SIZE OF THE HARDCORDED TEST INPUT
-//    int len = sizeof(message)/sizeof(message[0]);
-//    printf("izeof(message): %llu -- sizeof(message[0]): %llu\n", sizeof(message), sizeof(message[0]));
-//    printf("strlen(message): %llu\n", strlen(message));
-//    printf("sizeof(message[0]): %llu\n", sizeof(&message[0]));
 
-    char messageReturned[strlen(message)];
-    structureOutputSize = strlen(message);
-    
-    kr = IOConnectCallStructMethod( connect, writeMemoryMethod,
-                                   // inputStructure
-                                   &message, strlen(message),
-                                   // ouputStructure
-                                   &messageReturned, &structureOutputSize);
-    assert( KERN_SUCCESS == kr );
-    printf("Writing Memory...\n");
-}
 
 int main(int argc, const char * argv[]) {
     io_iterator_t            iter;
@@ -289,10 +298,13 @@ int main(int argc, const char * argv[]) {
         
         TestSharedMemorySize(service);
         TestInterruptStatus(service);
-        TestRead(service);
-        char message[] = "Hello World!";
-        TestWrite(service, message);
-        TestRead(service);
+        
+        TestSharedMemory(service);
+//        TestRead(service);
+//        char message[] = "Hello World!";
+//        TestWrite(service, message);
+//        TestRead(service);
+        
     }
     IOObjectRelease(iter);
 	

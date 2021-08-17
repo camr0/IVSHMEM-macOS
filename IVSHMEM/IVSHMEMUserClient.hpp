@@ -47,8 +47,8 @@ public:
     virtual IOReturn getBAR2MemorySize(UInt32 *dataIn, UInt32 *dataOut, IOByteCount inputCount, IOByteCount *outputCount);
     virtual IOReturn getInterruptsEnabled(UInt32 *dataIn, UInt32 *dataOut, IOByteCount inputCount, IOByteCount *outputCount);
     
-    virtual IOReturn readMemory(char *dataIn[], char *dataOut[], IOByteCount inputCount, IOByteCount *outputCount);
-    virtual IOReturn writeMemory(char *dataIn[], char *dataOut[], IOByteCount inputCount, IOByteCount *outputCount);
+//    virtual IOReturn readMemory(char *dataIn[], char *dataOut[], IOByteCount inputCount, IOByteCount *outputCount);
+//    virtual IOReturn writeMemory(char *dataIn[], char *dataOut[], IOByteCount inputCount, IOByteCount *outputCount);
     
 };
 

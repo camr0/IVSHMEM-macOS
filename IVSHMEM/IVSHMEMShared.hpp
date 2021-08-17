@@ -52,16 +52,23 @@ enum {
 
 // memory structure to be shared between the kernel and userland.
 typedef struct DriverSharedMemory {
-    uint32_t    field1;
-    uint32_t    field2;
-    uint32_t    field3;
-    char        string[100];
+    uint32_t    buildNumber;
+    char        *message[];
 } DriverSharedMemory;
+
+//typedef struct IVSHMEMSha {
+////    uint32_t    index;
+////    IOByteCount size;
+//    uint32_t    buildNumber = 1;
+//    char        *message[];
+//} MemoryMessage;
 
 //typedef struct IVSHMEMRegisters {
 //    uint32_t    intrMask;
 //    uint32_t    intrStatus;
 //    uint32_t    IVPosition // (VM ID 0 if )
 //} DeviceRegisters;
+
+
 
 #endif /* IVSHMEMShared_hpp */

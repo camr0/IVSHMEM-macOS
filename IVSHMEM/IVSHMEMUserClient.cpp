@@ -81,15 +81,15 @@ bool IVSHMEMDeviceUserClient::start(IOService *provider)
     IOLog("%s[%p]: BAR2 mem->getLength() = %llu \n", getName(), this, memLength);
     
     // TODO: replace this sizeof with a method to get the size of the actual IVSHMEM BAR2 region
-    fClientSharedMemory = IOBufferMemoryDescriptor::withOptions(kIOMemoryKernelUserShared, sizeof(DriverSharedMemory));
-    if (!fClientSharedMemory)
-        return false;
+//    fClientSharedMemory = IOBufferMemoryDescriptor::withOptions(kIOMemoryKernelUserShared, sizeof(DriverSharedMemory));
+//    if (!fClientSharedMemory)
+//        return false;
 
-    fClientShared = (DriverSharedMemory *) fClientSharedMemory->getBytesNoCopy();
-    
-    fClientShared->field1 = 0x11111111; // same in all endianesses...
-    fClientShared->field2 = 0x22222222; // ditto
-    fClientShared->field3 = 0x33333333; // ditto
+//    fClientShared = (DriverSharedMemory *) fClientSharedMemory->getBytesNoCopy();
+//
+//    fClientShared->field1 = 0x11111111; // same in all endianesses...
+//    fClientShared->field2 = 0x22222222; // ditto
+//    fClientShared->field3 = 0x33333333; // ditto
     
 //    if (fCrossEndian) {
 //        // Swap the fields so the user process sees the proper endianness
@@ -98,7 +98,7 @@ bool IVSHMEMDeviceUserClient::start(IOService *provider)
 //        fClientShared->field3 = OSSwapInt32(fClientShared->field3);
 //    }
 
-    (void) strlcpy(fClientShared->string, "some data", sizeof(fClientShared->string));
+//    (void) strlcpy(fClientShared->string, "some data", sizeof(fClientShared->string));
     fOpenCount = 1;
     
     return true;
@@ -177,19 +177,19 @@ IOReturn IVSHMEMDeviceUserClient::externalMethod(uint32_t selector,
                           arguments->structureInputSize, (IOByteCount *) &arguments->structureOutputSize );
             break;
         
-        case readMemoryMethod:
-            err = readMemory( (char **) arguments->structureInput,
-                             (char **) arguments->structureOutput,
-                             arguments->structureInputSize,
-                             (IOByteCount *) &arguments->structureOutputSize);
-            break;
-        
-        case writeMemoryMethod:
-            err = writeMemory( (char **) arguments->structureInput,
-                             (char **) arguments->structureOutput,
-                             arguments->structureInputSize,
-                             (IOByteCount *) &arguments->structureOutputSize);
-            break;
+//        case readMemoryMethod:
+//            err = readMemory( (char **) arguments->structureInput,
+//                             (char **) arguments->structureOutput,
+//                             arguments->structureInputSize,
+//                             (IOByteCount *) &arguments->structureOutputSize);
+//            break;
+//
+//        case writeMemoryMethod:
+//            err = writeMemory( (char **) arguments->structureInput,
+//                             (char **) arguments->structureOutput,
+//                             arguments->structureInputSize,
+//                             (IOByteCount *) &arguments->structureOutputSize);
+//            break;
             
 //        case kSampleMethod2:
 //            err = method2( (SampleStructForMethod2 *) arguments->structureInput,
@@ -287,9 +287,9 @@ IOReturn IVSHMEMDeviceUserClient::clientMemoryForType(
 //            break;
             
         case kBAR2MemoryType:
-            // Give the client access to some of the card's memory
+            // Give the client access to the card's memory
             // (all clients get the same)
-            *memory  = fDriver->copyGlobalMemory();
+            *memory  = fDriver->copyGlobalMemory(); // BAR2
             
             ret = kIOReturnSuccess;
             break;
@@ -345,56 +345,56 @@ IOReturn IVSHMEMDeviceUserClient::getInterruptsEnabled(UInt32 *dataIn,
     return( ret );
 }
 
-IOReturn IVSHMEMDeviceUserClient::readMemory(char *dataIn[],
-                                             char *dataOut[],
-                                             IOByteCount inputSize,
-                                             IOByteCount *outputSize)
-{
-    IOReturn    ret;
-//    IOItemCount    count;
-    
-    IOLog("IVSHMEMDeviceUserClient::readMemory\n");
-    IOLog("[IVSHMEMUserClient] dataIn[]: %s\n", dataIn);
-    if (*outputSize < inputSize)
-        return( kIOReturnNoSpace );
-    
-    IOMemoryDescriptor *memory = fDriver->copyGlobalMemory(); // BAR2
-//    IOByteCount *returnByteLength = 0;
-    int len = sizeof(dataIn)/sizeof(dataIn[0]);
-//    char returnMessage[len];
-    
-// TODO: offset hardcoded at 0
-    memory->readBytes(0, dataOut, *outputSize);
-//    IOLog("[IVSHMEMUserClient] READING MEMORY: %s (sizeof = %lu)\n", dataOut, sizeof(dataIn));
-    IOLog("[IVSHMEMUserClient] READING MEMORY: %s (outputSize = %lu)\n", dataOut, *outputSize);
-//    *dataOut = returnMessage;
-//    *outputSize = sizeof(dataOut);
-    
-    ret = kIOReturnSuccess;
-    return( ret );
-}
-
-IOReturn IVSHMEMDeviceUserClient::writeMemory(char *dataIn[],
-                                             char *dataOut[],
-                                             IOByteCount inputSize,
-                                             IOByteCount *outputSize)
-{
-    IOReturn    ret;
-//    IOItemCount    count;
-
-    IOLog("IVSHMEMDeviceUserClient::writeMemory\n");
-
-    if (*outputSize < inputSize) {
-        IOLog("AHHHHHHHHH NO SPACEEEEEEEEE (*outputSize < inputSize)\n");
-        return( kIOReturnNoSpace );
-    }
-
-    IOMemoryDescriptor *memory = fDriver->copyGlobalMemory(); // BAR2
-//    IOByteCount count = sizeof(dataIn);
-//    IOLog("[IVSHMEMUserClient] WRITING MEMORY: %s (sizeof = %lu)\n", dataIn, sizeof(dataIn));
-    IOLog("[IVSHMEMUserClient] WRITING MEMORY: %s (inputSize = %lu)\n", dataIn, inputSize);
-    memory->writeBytes(0, dataIn, inputSize);
-
-    ret = kIOReturnSuccess;
-    return( ret );
-}
+//IOReturn IVSHMEMDeviceUserClient::readMemory(char *dataIn[],
+//                                             char *dataOut[],
+//                                             IOByteCount inputSize,
+//                                             IOByteCount *outputSize)
+//{
+//    IOReturn    ret;
+////    IOItemCount    count;
+//    
+//    IOLog("IVSHMEMDeviceUserClient::readMemory\n");
+//    IOLog("[IVSHMEMUserClient] dataIn[]: %s\n", dataIn);
+//    if (*outputSize < inputSize)
+//        return( kIOReturnNoSpace );
+//    
+//    IOMemoryDescriptor *memory = fDriver->copyGlobalMemory(); // BAR2
+////    IOByteCount *returnByteLength = 0;
+//    int len = sizeof(dataIn)/sizeof(dataIn[0]);
+////    char returnMessage[len];
+//    
+//// TODO: offset hardcoded at 0
+//    memory->readBytes(0, dataOut, *outputSize);
+////    IOLog("[IVSHMEMUserClient] READING MEMORY: %s (sizeof = %lu)\n", dataOut, sizeof(dataIn));
+//    IOLog("[IVSHMEMUserClient] READING MEMORY: %s (outputSize = %lu)\n", dataOut, *outputSize);
+////    *dataOut = returnMessage;
+////    *outputSize = sizeof(dataOut);
+//    
+//    ret = kIOReturnSuccess;
+//    return( ret );
+//}
+//
+//IOReturn IVSHMEMDeviceUserClient::writeMemory(char *dataIn[],
+//                                             char *dataOut[],
+//                                             IOByteCount inputSize,
+//                                             IOByteCount *outputSize)
+//{
+//    IOReturn    ret;
+////    IOItemCount    count;
+//
+//    IOLog("IVSHMEMDeviceUserClient::writeMemory\n");
+//
+//    if (*outputSize < inputSize) {
+//        IOLog("AHHHHHHHHH NO SPACEEEEEEEEE (*outputSize < inputSize)\n");
+//        return( kIOReturnNoSpace );
+//    }
+//
+//    IOMemoryDescriptor *memory = fDriver->copyGlobalMemory(); // BAR2
+////    IOByteCount count = sizeof(dataIn);
+////    IOLog("[IVSHMEMUserClient] WRITING MEMORY: %s (sizeof = %lu)\n", dataIn, sizeof(dataIn));
+//    IOLog("[IVSHMEMUserClient] WRITING MEMORY: %s (inputSize = %lu)\n", dataIn, inputSize);
+//    memory->writeBytes(0, dataIn, inputSize);
+//
+//    ret = kIOReturnSuccess;
+//    return( ret );
+//}
