@@ -25,8 +25,6 @@ private:
     DriverSharedMemory          *fClientShared;
     task_t                          fTask;
     int32_t                         fOpenCount;
-//    bool                            fCrossEndian;
-//    bool                        *fInterruptsEnabled; 
 
 public:
     // IOService overrides
@@ -43,12 +41,8 @@ public:
     virtual IOReturn clientMemoryForType(UInt32 type, IOOptionBits *options, IOMemoryDescriptor **memory);
     
     // External methods
-    virtual IOReturn method1(UInt32 *dataIn, UInt32 *dataOut, IOByteCount inputCount, IOByteCount *outputCount);
     virtual IOReturn getBAR2MemorySize(UInt32 *dataIn, UInt32 *dataOut, IOByteCount inputCount, IOByteCount *outputCount);
     virtual IOReturn getInterruptsEnabled(UInt32 *dataIn, UInt32 *dataOut, IOByteCount inputCount, IOByteCount *outputCount);
-    
-//    virtual IOReturn readMemory(char *dataIn[], char *dataOut[], IOByteCount inputCount, IOByteCount *outputCount);
-//    virtual IOReturn writeMemory(char *dataIn[], char *dataOut[], IOByteCount inputCount, IOByteCount *outputCount);
     
 };
 

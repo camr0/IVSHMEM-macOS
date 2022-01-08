@@ -31,22 +31,6 @@ bool IVSHMEMDeviceUserClient::initWithTask(task_t owningTask,
     // Can't call getName() until init() has been called.
     IOLog("%s[%p]::%s(type = " UInt32_FORMAT " )\n", getName(), this, __FUNCTION__, type);
     
-//    if (success) {
-//        // This code will do the right thing on both PowerPC- and Intel-based systems because the cross-endian
-//        // property will never be set on PowerPC-based Macs.
-//        fCrossEndian = false;
-//        if (properties != NULL && properties->getObject(kIOUserClientCrossEndianKey)) {
-//            // A connection to this user client is being opened by a user process running using Rosetta.
-//
-//            // Indicate that this user client can handle being called from cross-endian user processes by
-//            // setting its IOUserClientCrossEndianCompatible property in the I/O Registry.
-//            if (setProperty(kIOUserClientCrossEndianCompatibleKey, kOSBooleanTrue)) {
-//                fCrossEndian = true;
-//                IOLog("%s[%p]::%s(): fCrossEndian = true\n", getName(), this, __FUNCTION__);
-//            }
-//        }
-//    }
-    
     fTask = owningTask;
     fDriver = NULL;
     
@@ -76,29 +60,10 @@ bool IVSHMEMDeviceUserClient::start(IOService *provider)
      * will call clientMemoryForType to obtain this memory descriptor.
      */
     
-    IOMemoryDescriptor *mem = fDriver->copyGlobalMemory(); // BAR2
-    IOByteCount memLength = mem->getLength(); // Length of BAR2(shared mem)
+    IOMemoryDescriptor *mem = fDriver->copyGlobalMemory(); // BAR2 (shared mem)
+    IOByteCount memLength = mem->getLength(); // Length of BAR2 (shared mem)
     IOLog("%s[%p]: BAR2 mem->getLength() = %llu \n", getName(), this, memLength);
     
-    // TODO: replace this sizeof with a method to get the size of the actual IVSHMEM BAR2 region
-//    fClientSharedMemory = IOBufferMemoryDescriptor::withOptions(kIOMemoryKernelUserShared, sizeof(DriverSharedMemory));
-//    if (!fClientSharedMemory)
-//        return false;
-
-//    fClientShared = (DriverSharedMemory *) fClientSharedMemory->getBytesNoCopy();
-//
-//    fClientShared->field1 = 0x11111111; // same in all endianesses...
-//    fClientShared->field2 = 0x22222222; // ditto
-//    fClientShared->field3 = 0x33333333; // ditto
-    
-//    if (fCrossEndian) {
-//        // Swap the fields so the user process sees the proper endianness
-//        fClientShared->field1 = OSSwapInt32(fClientShared->field1);
-//        fClientShared->field2 = OSSwapInt32(fClientShared->field2);
-//        fClientShared->field3 = OSSwapInt32(fClientShared->field3);
-//    }
-
-//    (void) strlcpy(fClientShared->string, "some data", sizeof(fClientShared->string));
     fOpenCount = 1;
     
     return true;
@@ -156,46 +121,22 @@ IOReturn IVSHMEMDeviceUserClient::externalMethod(uint32_t selector,
     }
     
     IOReturn err;
-    IOLog("The Leopard and later way to route external methods\n");
+//    IOLog("The Leopard and later way to route external methods\n");
     switch (selector)
     {
-        case kSampleMethod1:
-            err = method1( (UInt32 *) arguments->structureInput,
-                          (UInt32 *)  arguments->structureOutput,
-                          arguments->structureInputSize, (IOByteCount *) &arguments->structureOutputSize );
-            break;
-        
+        // Returns the size of the shared memory device (BAR2)
         case getMemorySizeMethod:
             err = getBAR2MemorySize( (UInt32 *) arguments->structureInput,
                           (UInt32 *)  arguments->structureOutput,
                           arguments->structureInputSize, (IOByteCount *) &arguments->structureOutputSize );
             break;
         
+        // Interrupts are not currently supported, this method is a placeholder
         case getInterruptsEnabledMethod:
             err = getInterruptsEnabled( (UInt32 *) arguments->structureInput,
                           (UInt32 *)  arguments->structureOutput,
                           arguments->structureInputSize, (IOByteCount *) &arguments->structureOutputSize );
             break;
-        
-//        case readMemoryMethod:
-//            err = readMemory( (char **) arguments->structureInput,
-//                             (char **) arguments->structureOutput,
-//                             arguments->structureInputSize,
-//                             (IOByteCount *) &arguments->structureOutputSize);
-//            break;
-//
-//        case writeMemoryMethod:
-//            err = writeMemory( (char **) arguments->structureInput,
-//                             (char **) arguments->structureOutput,
-//                             arguments->structureInputSize,
-//                             (IOByteCount *) &arguments->structureOutputSize);
-//            break;
-            
-//        case kSampleMethod2:
-//            err = method2( (SampleStructForMethod2 *) arguments->structureInput,
-//                          (SampleResultsForMethod2 *)  arguments->structureOutput,
-//                          arguments->structureInputSize, (IOByteCount *) &arguments->structureOutputSize );
-//            break;
             
         default:
             err = kIOReturnBadArgument;
@@ -210,53 +151,6 @@ IOReturn IVSHMEMDeviceUserClient::externalMethod(uint32_t selector,
 /*
  * Implement each of the external methods described above.
  */
-
-IOReturn IVSHMEMDeviceUserClient::method1(UInt32 *dataIn,
-                                          UInt32 *dataOut,
-                                          IOByteCount inputSize,
-                                          IOByteCount *outputSize )
-{
-    
-    IOReturn    ret;
-    IOItemCount    count;
-    
-    IOLog("IVSHMEMDeviceUserClient::method1(");
-    os_log(OS_LOG_DEFAULT, "AAAAAAAAAAAAAAAAAAAAAAAAAaaa");
-    
-    if (*outputSize < inputSize)
-        return( kIOReturnNoSpace );
-    
-    count = inputSize / sizeof(UInt32);
-    for (UInt32 i = 0; i < count; i++ ) {
-//        // Client app is running using Rosetta
-//        if (fCrossEndian) {
-//            dataIn[i] = OSSwapInt32(dataIn[i]);
-//        }
-        IOLog("" UInt32_x_FORMAT ", ", dataIn[i]);
-//        dataOut[i] = dataIn[i] ^ 0xffffffff;
-        dataOut[i] = dataIn[i] + 5;
-//        // Rosetta again
-//        if (fCrossEndian) {
-//            dataOut[i] = OSSwapInt32(dataOut[i]);
-//        }
-        
-    }
-    
-    ret = kIOReturnSuccess;
-    IOLog(")\n");
-    *outputSize = count * sizeof( UInt32 );
-    
-//    IOMemoryDescriptor *memory  = fDriver->copyGlobalMemory();
-//    IOByteCount *returnByteLength = 0;
-//    char message[] = "Hello World!";
-//    memory->writeBytes(0, message, sizeof(message));
-    
-//    char returnMessage[sizeof(message)];
-//    memory->readBytes(0, returnMessage, sizeof(message));
-//    IOLog("READING MEMORY: %s\n", returnMessage);
-    
-    return( ret );
-}
 
 /*
  * Shared memory support. Supply a IOMemoryDescriptor instance to describe
@@ -277,15 +171,6 @@ IOReturn IVSHMEMDeviceUserClient::clientMemoryForType(
     IOLog("SamplePCIUserClient::clientMemoryForType(" UInt32_FORMAT ")\n", type);
     
     switch( type ) {
-            
-//        case kSamplePCIMemoryType1:
-//            // give the client access to some shared data structure
-//            // (shared between this object and the client)
-//            fClientSharedMemory->retain();
-//            *memory  = fClientSharedMemory;
-//            ret = kIOReturnSuccess;
-//            break;
-            
         case kBAR2MemoryType:
             // Give the client access to the card's memory
             // (all clients get the same)
@@ -302,16 +187,14 @@ IOReturn IVSHMEMDeviceUserClient::clientMemoryForType(
     return ret;
 }
 
-
 IOReturn IVSHMEMDeviceUserClient::getBAR2MemorySize(UInt32 *dataIn,
                                           UInt32 *dataOut,
                                           IOByteCount inputSize,
                                           IOByteCount *outputSize )
 {
     IOReturn    ret;
-//    IOItemCount    count;
     
-    IOLog("IVSHMEMDeviceUserClient::getMemorySize\n");
+//    IOLog("IVSHMEMDeviceUserClient::getMemorySize\n");
     
     if (*outputSize < inputSize)
         return( kIOReturnNoSpace );
@@ -324,16 +207,14 @@ IOReturn IVSHMEMDeviceUserClient::getBAR2MemorySize(UInt32 *dataIn,
     return( ret );
 }
 
-
 IOReturn IVSHMEMDeviceUserClient::getInterruptsEnabled(UInt32 *dataIn,
                                           UInt32 *dataOut,
                                           IOByteCount inputSize,
                                           IOByteCount *outputSize )
 {
     IOReturn    ret;
-//    IOItemCount    count;
     
-//    IOLog("IVSHMEMDeviceUserClient::getMemorySize\n");
+//    IOLog("IVSHMEMDeviceUserClient::getInterruptsEnabled\n");
     
     if (*outputSize < inputSize)
         return( kIOReturnNoSpace );
@@ -344,57 +225,3 @@ IOReturn IVSHMEMDeviceUserClient::getInterruptsEnabled(UInt32 *dataIn,
     *outputSize = sizeof(UInt32);
     return( ret );
 }
-
-//IOReturn IVSHMEMDeviceUserClient::readMemory(char *dataIn[],
-//                                             char *dataOut[],
-//                                             IOByteCount inputSize,
-//                                             IOByteCount *outputSize)
-//{
-//    IOReturn    ret;
-////    IOItemCount    count;
-//    
-//    IOLog("IVSHMEMDeviceUserClient::readMemory\n");
-//    IOLog("[IVSHMEMUserClient] dataIn[]: %s\n", dataIn);
-//    if (*outputSize < inputSize)
-//        return( kIOReturnNoSpace );
-//    
-//    IOMemoryDescriptor *memory = fDriver->copyGlobalMemory(); // BAR2
-////    IOByteCount *returnByteLength = 0;
-//    int len = sizeof(dataIn)/sizeof(dataIn[0]);
-////    char returnMessage[len];
-//    
-//// TODO: offset hardcoded at 0
-//    memory->readBytes(0, dataOut, *outputSize);
-////    IOLog("[IVSHMEMUserClient] READING MEMORY: %s (sizeof = %lu)\n", dataOut, sizeof(dataIn));
-//    IOLog("[IVSHMEMUserClient] READING MEMORY: %s (outputSize = %lu)\n", dataOut, *outputSize);
-////    *dataOut = returnMessage;
-////    *outputSize = sizeof(dataOut);
-//    
-//    ret = kIOReturnSuccess;
-//    return( ret );
-//}
-//
-//IOReturn IVSHMEMDeviceUserClient::writeMemory(char *dataIn[],
-//                                             char *dataOut[],
-//                                             IOByteCount inputSize,
-//                                             IOByteCount *outputSize)
-//{
-//    IOReturn    ret;
-////    IOItemCount    count;
-//
-//    IOLog("IVSHMEMDeviceUserClient::writeMemory\n");
-//
-//    if (*outputSize < inputSize) {
-//        IOLog("AHHHHHHHHH NO SPACEEEEEEEEE (*outputSize < inputSize)\n");
-//        return( kIOReturnNoSpace );
-//    }
-//
-//    IOMemoryDescriptor *memory = fDriver->copyGlobalMemory(); // BAR2
-////    IOByteCount count = sizeof(dataIn);
-////    IOLog("[IVSHMEMUserClient] WRITING MEMORY: %s (sizeof = %lu)\n", dataIn, sizeof(dataIn));
-//    IOLog("[IVSHMEMUserClient] WRITING MEMORY: %s (inputSize = %lu)\n", dataIn, inputSize);
-//    memory->writeBytes(0, dataIn, inputSize);
-//
-//    ret = kIOReturnSuccess;
-//    return( ret );
-//}
